@@ -1,0 +1,67 @@
+<div class="container">
+  <form phx-submit="spawn">
+    <fieldset>
+      <label for="workersCount">RPC calls number</label>
+      <input name="count" type="number" min="1" step="1" value=<%= @form_count %> id="workersCount">
+
+      <section class="row">
+        <article class="column">
+          <label for="minSleep">Min sleep time, msec</label>
+          <input name="min" type="number" min="1" value=<%= @form_tmin %> id="minSleep">
+        </article>
+        <article class="column">
+          <label for="maxSleep">Max sleep time, msec</label>
+          <input name="max" type="number" min="5" value=<%= @form_tmax %> id="maxSleep">
+        </article>
+      </section>
+
+      <button type="submit" class="button" phx-disable-with="Starting...">Spawn</button>
+    <fieldset>
+  </form>
+</div>
+
+<div class="container">
+  <fieldset>
+    <legend>Available services:</legend>
+    <table class="response_table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>service id</th>
+      </tr>
+    </thead>
+      <tbody>
+        <%= for service_id <- @service_list do %>
+          <tr>
+            <td></td>
+            <td><%= service_id %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </fieldset>
+</div>
+
+<div class="container">
+  <fieldset>
+    <legend>Spawned RPC call processes:</legend>
+    <table class="response_table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>pid</th>
+        <th>service id</th>
+      </tr>
+    </thead>
+      <tbody>
+        <%= for {pid, service_id} <- @responses do %>
+          <tr>
+            <td></td>
+            <td><%= pid |> :erlang.pid_to_list |> to_string %></td>
+            <td><%= service_id %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </fieldset>
+</div>
